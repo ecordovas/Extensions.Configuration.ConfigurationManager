@@ -11,6 +11,7 @@ namespace Extensions.Configuration {
 
         public ConfigurationManagerProvider(ConfigurationManagerSource source) {
             Source = source;
+            Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         protected IDictionary<string, string> Data { get; set; }
@@ -34,6 +35,8 @@ namespace Extensions.Configuration {
         public IChangeToken GetReloadToken() => _reloadToken;
 
         public void Load() {
+            Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
             var appSettings = ConfigurationManager.AppSettings;
             foreach (var key in appSettings.AllKeys) {
                 Data.Add(key, appSettings[key]);
