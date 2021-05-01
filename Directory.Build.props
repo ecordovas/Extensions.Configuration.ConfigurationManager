@@ -4,6 +4,9 @@
     <RepositoryUrl>https://github.com/ecordovas/Extensions.Configuration.ConfigurationManager</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RepoRelativeProjectDir>$([MSBuild]::MakeRelative($(RepoRoot), $(MSBuildProjectDirectory)))</RepoRelativeProjectDir>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,6 +19,14 @@
 
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.4.194" PrivateAssets="All"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectDirectory.Contains($(MSBuildThisFileDirectory)src))">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+  </ItemGroup>
 
   <ItemGroup Condition="$(MSBuildProjectName.EndsWith(.Tests))">
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
