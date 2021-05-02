@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using Microsoft.Extensions.Configuration.Test;
 using Xunit;
 
@@ -7,7 +8,17 @@ namespace Extensions.Configuration.ConfigurationManager.Tests {
     public class ConfigurationManagerProviderTests {
         private ConfigurationManagerProvider LoadProvider(IEnumerable<KeyValuePair<string, string>> values) {
             ConfigurationFileUpdater.Update(values);
-            var p = new ConfigurationManagerProvider(new ConfigurationManagerSource());
+
+            var source = new ConfigurationManagerSource {
+                Optional = false,
+                ReloadOnChange = false,
+                Path = System.Configuration.ConfigurationManager
+                             .OpenExeConfiguration(ConfigurationUserLevel.None)
+                             .FilePath
+            };
+            source.ResolveFileProvider();
+
+            var p = new ConfigurationManagerProvider(source);
             p.Load();
             return p;
         }

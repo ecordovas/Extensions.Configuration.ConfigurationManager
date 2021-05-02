@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Primitives;
 
 namespace Extensions.Configuration {
-    public class ConfigurationManagerProvider : IConfigurationProvider {
-        private readonly ConfigurationReloadToken _reloadToken = new ConfigurationReloadToken();
+    public class ConfigurationManagerProvider : FileConfigurationProvider {
+        public ConfigurationManagerProvider(ConfigurationManagerSource source) : base(source) { }
 
-        public ConfigurationManagerProvider(ConfigurationManagerSource source) {
-            Source = source;
-            Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        }
-
-        protected IDictionary<string, string> Data { get; set; }
-        protected ConfigurationManagerSource Source { get; }
-
-        public IEnumerable<string> GetChildKeys(IEnumerable<string> earlierKeys, string parentPath) {
+        public override IEnumerable<string> GetChildKeys(IEnumerable<string> earlierKeys, string parentPath) {
             var prefix = parentPath == null ? string.Empty : parentPath + ConfigurationPath.KeyDelimiter;
 
             return Data
@@ -32,9 +24,7 @@ namespace Extensions.Configuration {
             return indexOf < 0 ? key.Substring(prefixLength) : key.Substring(prefixLength, indexOf - prefixLength);
         }
 
-        public IChangeToken GetReloadToken() => _reloadToken;
-
-        public void Load() {
+        public override void Load(Stream _) {
             Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             var appSettings = ConfigurationManager.AppSettings;
@@ -47,10 +37,6 @@ namespace Extensions.Configuration {
                 Data.Add($"ConnectionStrings{ConfigurationPath.KeyDelimiter}{connectionString.Name}", connectionString.ConnectionString);
             }
         }
-
-        public virtual void Set(string key, string value) => Data[key] = value;
-
-        public virtual bool TryGet(string key, out string value) => Data.TryGetValue(key, out value);
 
         public override string ToString() => $"{GetType().Name}";
     }

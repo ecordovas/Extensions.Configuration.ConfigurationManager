@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Test;
 using Xunit;
@@ -25,8 +26,15 @@ namespace Extensions.Configuration.ConfigurationManager.Tests {
 
             ConfigurationFileUpdater.Update(values);
 
-            var provider = new ConfigurationManagerProvider(new ConfigurationManagerSource());
-            return (provider, () => provider.Load());
+            var provider = new ConfigurationManagerProvider(
+                                                            new ConfigurationManagerSource {
+                                                                Optional = true,
+                                                                ReloadOnChange = false,
+                                                                Path = System.Configuration.ConfigurationManager
+                                                                             .OpenExeConfiguration(ConfigurationUserLevel.None)
+                                                                             .FilePath
+                                                            });
+            return (provider, () => provider.Load(null));
         }
     }
 }
