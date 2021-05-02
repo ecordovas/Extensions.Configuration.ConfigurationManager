@@ -4,6 +4,25 @@ Provides access to configuration manager files but through Microsoft.Extensions.
 [![Build](https://github.com/ecordovas/Extensions.Configuration.ConfigurationManager/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ecordovas/Extensions.Configuration.ConfigurationManager/actions/workflows/dotnet.yml)
 [![NuGet stable](https://img.shields.io/nuget/v/Extensions.Configuration.ConfigurationManager.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/Extensions.Configuration.ConfigurationManager)
 
+## Getting started
+
+```csharp
+ IConfiguration config = new ConfigurationBuilder()
+                .AddConfigurationManager()
+                .Build();
+
+var value1 = config["key1"];
+var value2 = config["key2"];
+var connectionString = config.GetConnectionString("db");
+```
+
+It is also a good idea to add a reference to Microsoft.Extensions.Configuration.Binder in order to use the following extension methods:
+
+```csharp
+var value1 = config.GetValue<string>("key1");
+var value2 = config.GetValue<bool>("key2");
+```
+
 ## Considerations
 
 This package was created to help people to step forward in the migration of their code bases to .net core
