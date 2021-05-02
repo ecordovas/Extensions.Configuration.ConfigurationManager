@@ -205,3 +205,29 @@ dotnet_naming_style.begins_with_i.capitalization=pascal_case
 
 # IDE0001: Simplify Names
 dotnet_diagnostic.ide0001.severity=none
+
+[*]
+
+# Microsoft .NET properties
+csharp_indent_braces=false
+csharp_new_line_before_open_brace=none
+csharp_preferred_modifier_order=public, private, protected, internal, new, abstract, virtual, sealed, override, static, readonly, extern, unsafe, volatile, async:warning
+csharp_prefer_braces=true:warning
+
+# ReSharper properties
+resharper_align_first_arg_by_paren=true
+resharper_align_linq_query=true
+resharper_align_multiline_argument=true
+resharper_align_multiline_calls_chain=true
+resharper_align_multiline_expression=true
+resharper_align_multiline_extends_list=true
+resharper_align_multline_type_parameter_constrains=true
+resharper_align_multline_type_parameter_list=true
+resharper_align_tuple_components=true
+resharper_braces_redundant=true
+resharper_csharp_align_multiline_parameter=true
+resharper_csharp_align_multiple_declaration=true
+resharper_csharp_keep_blank_lines_in_declarations=1
+
+# ReSharper inspection severities
+resharper_arrange_attributes_highlighting=warning
