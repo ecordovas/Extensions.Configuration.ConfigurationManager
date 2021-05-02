@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Extensions.Configuration</RootNamespace>
+    <Description>Provides access to configuration manager files (app.config/web.config) but through Microsoft.Extensions.Configuration abstractions.</Description>
+    <PackageTags>Configuration;ConfigurationManager</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
