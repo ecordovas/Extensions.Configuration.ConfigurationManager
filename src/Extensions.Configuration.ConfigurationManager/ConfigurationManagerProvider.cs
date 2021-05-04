@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
@@ -9,8 +7,6 @@ namespace Extensions.Configuration {
         public ConfigurationManagerProvider(ConfigurationManagerSource source) : base(source) { }
 
         public override void Load(Stream _) {
-            Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
             var appSettings = ConfigurationManager.AppSettings;
             foreach (var key in appSettings.AllKeys) {
                 Data.Add(key, appSettings[key]);
