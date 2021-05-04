@@ -1,7 +1,7 @@
 # Extensions.Configuration.ConfigurationManager
 Provides access to configuration manager files but through Microsoft.Extensions.Configuration abstractions.
 
-[![Build](https://github.com/ecordovas/Extensions.Configuration.ConfigurationManager/actions/workflows/dotnet.yml/badge.svg)](https://github.com/ecordovas/Extensions.Configuration.ConfigurationManager/actions/workflows/dotnet.yml)
+[![Build](https://github.com/ecordovas/Extensions.Configuration.ConfigurationManager/actions/workflows/build-release.yml/badge.svg)](https://github.com/ecordovas/Extensions.Configuration.ConfigurationManager/actions/workflows/build-release.yml)
 [![NuGet stable](https://img.shields.io/nuget/v/Extensions.Configuration.ConfigurationManager.svg?style=flat&logo=nuget)](https://www.nuget.org/packages/Extensions.Configuration.ConfigurationManager)
 
 ## Getting started
