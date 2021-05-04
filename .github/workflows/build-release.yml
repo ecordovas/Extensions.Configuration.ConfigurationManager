@@ -1,8 +1,11 @@
-name: .NET
+name: Build and Release
 
 on:
   push:
     branches: [ release/** ]
+    paths-ignore: 
+    - '.github/**'
+    - 'README.md'
 
 jobs:
   build:
