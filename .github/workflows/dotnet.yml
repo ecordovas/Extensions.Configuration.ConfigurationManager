@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ release/** ]
+    branches: [ 'release/**' ]
   pull_request:
-    branches: [ release/** ]
+    branches: [ '**' ]
 
 jobs:
   build:
@@ -38,10 +38,12 @@ jobs:
         path: TestResults/*.trx
         reporter: dotnet-trx
     - name: Create package
+      if: ${{ startsWith(github.ref, 'release/') }}
       env:
         AUTHOR: ${{secrets.AUTHOR}}
       run: dotnet pack ${{env.PROJECT_DIRECTORY_PATH}} -c Release --no-build "/p:Authors=${{env.AUTHOR}}"
     - name: Publish package
+      if: ${{ startsWith(github.ref, 'release/') }}
       env:
         NUGET_AUTH_TOKEN: ${{secrets.NUGET_APIKEY}}
       run: dotnet nuget push ${{env.PROJECT_DIRECTORY_PATH}}bin/Release/*.nupkg -k "${{env.NUGET_AUTH_TOKEN}}" -s "https://api.nuget.org/v3/index.json"
