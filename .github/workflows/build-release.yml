@@ -1,0 +1,45 @@
+name: .NET
+
+on:
+  push:
+    branches: [ release/** ]
+
+jobs:
+  build:
+    env:
+      PROJECT_DIRECTORY_PATH: ./src/Extensions.Configuration.ConfigurationManager/
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+        source-url: https://api.nuget.org/v3/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.NUGET_APIKEY}}
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore
+    - name: Test
+      run: dotnet test -c Release --filter FullyQualifiedName!~Microsoft -l trx --no-build -r ./TestResults -v normal
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: MSTest Tests
+        path: TestResults/*.trx
+        reporter: dotnet-trx
+    - name: Create package
+      env:
+        AUTHOR: ${{secrets.AUTHOR}}
+      run: dotnet pack ${{env.PROJECT_DIRECTORY_PATH}} -c Release --no-build "/p:Authors=${{env.AUTHOR}}"
+    - name: Publish package
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.NUGET_APIKEY}}
+      run: dotnet nuget push ${{env.PROJECT_DIRECTORY_PATH}}bin/Release/*.nupkg -k "${{env.NUGET_AUTH_TOKEN}}" -s "https://api.nuget.org/v3/index.json"
